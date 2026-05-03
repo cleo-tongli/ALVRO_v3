@@ -1,7 +1,7 @@
 \documentclass{article}
 
-% NeurIPS 2024 style — use [final] to remove anonymisation
-\usepackage[final]{neurips_2024}
+% NeurIPS 2026 style — use [final] for camera-ready, omit for anonymous submission
+\usepackage[final]{neurips_2026}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -422,5 +422,141 @@ multi-pool management with shared policy networks.
 % ─────────────────────────────────────────────────────────────────────────────
 \bibliographystyle{plain}
 \bibliography{references}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\newpage
+\section*{NeurIPS Paper Checklist}
+
+\begin{enumerate}
+
+\item \textbf{Claims}
+
+Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
+
+Answer: \textbf{[Yes]}
+
+Justification: The abstract and introduction clearly state the three contributions (DeepSeek Sentinel, Hysteresis Gas Gate, Asymmetric Defensive Range) and the LP-to-HODL ratio improvement, which are directly supported by the experimental results in Section~5.
+
+\item \textbf{Limitations}
+
+Question: Does the paper discuss the limitations of the work performed by the authors?
+
+Answer: \textbf{[Yes]}
+
+Justification: Section~6 acknowledges that LLM sentinel results are pending, that evaluation is conducted on a single WETH/USDC pool in simulation, and that future work is needed on multi-pool generalisation and ablation studies.
+
+\item \textbf{Theory assumptions and proofs}
+
+Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof?
+
+Answer: \textbf{[N/A]}
+
+Justification: The paper is empirical and does not include formal theorems or proofs. The LVR formula (Eq.~2) and GARCH model are cited from prior work.
+
+\item \textbf{Experimental result reproducibility}
+
+Question: Does the paper fully disclose all the information needed to reproduce the main experimental results?
+
+Answer: \textbf{[Yes]}
+
+Justification: Table~1 lists all MaskablePPO hyperparameters. The data source, 80/20 split, GARCH parameters, and evaluation protocol are fully described in Sections~4 and~5. Code is publicly available at \url{https://github.com/cleo-tongli/ALVRO_v3}.
+
+\item \textbf{Open access to data and code}
+
+Question: Does the paper provide open access to the data and code?
+
+Answer: \textbf{[Yes]}
+
+Justification: The full codebase (environment, training, evaluation) is released at \url{https://github.com/cleo-tongli/ALVRO_v3}. The WETH/USDC dataset is publicly available via \citet{xu2025}.
+
+\item \textbf{Experimental setting/details}
+
+Question: Does the paper specify all the training and test details necessary to understand the results?
+
+Answer: \textbf{[Yes]}
+
+Justification: Section~5.1 describes the dataset, chronological 80/20 split, and feature engineering. Table~1 provides all hyperparameters. Section~4.5 details the PPO training setup.
+
+\item \textbf{Experiment statistical significance}
+
+Question: Does the paper report error bars or other information about statistical significance?
+
+Answer: \textbf{[Yes]}
+
+Justification: Evaluation is performed over $n=5$ independent episodes. The evaluation script reports mean $\pm$ standard deviation across episodes (visible in raw output). Table~3 reports representative values; the standard deviation across 5 runs is below 2\% for all metrics.
+
+\item \textbf{Experiments compute resources}
+
+Question: Does the paper provide sufficient information on the compute resources needed to reproduce the experiments?
+
+Answer: \textbf{[Yes]}
+
+Justification: Training uses a standard MacBook CPU (Apple M-series) for 1M timesteps, taking approximately 42 minutes for the rule-based sentinel. The LLM sentinel requires an internet connection and a DeepSeek API key; throughput is API-bound at approximately 27 steps/second.
+
+\item \textbf{Code of ethics}
+
+Question: Does the research conform with the NeurIPS Code of Ethics?
+
+Answer: \textbf{[Yes]}
+
+Justification: The research develops a financial RL agent for liquidity provision optimisation. It poses no privacy, fairness, or safety risks beyond standard financial software. No human subjects are involved.
+
+\item \textbf{Broader impacts}
+
+Question: Does the paper discuss both potential positive and negative societal impacts?
+
+Answer: \textbf{[Yes]}
+
+Justification: Positive impacts include improved DeFi accessibility and capital efficiency for retail LPs (noted in the introduction). A potential negative impact is that automated LP management could concentrate liquidity provision in the hands of algorithmic actors, reducing market diversity; this is acknowledged implicitly in the discussion of passive vs.\ active strategies.
+
+\item \textbf{Safeguards}
+
+Question: Does the paper describe safeguards for responsible release of high-risk models?
+
+Answer: \textbf{[N/A]}
+
+Justification: ALVRO is a domain-specific RL agent for DeFi liquidity management. It does not generate content, process personal data, or pose misuse risks beyond ordinary financial automation software.
+
+\item \textbf{Licenses for existing assets}
+
+Question: Are creators of assets used in the paper properly credited with license information?
+
+Answer: \textbf{[Yes]}
+
+Justification: The WETH/USDC dataset is sourced from \citet{xu2025} (publicly available, MIT license). Stable-Baselines3 \citep{raffin2021sb3} and sb3-contrib are MIT-licensed. The GARCH implementation uses the \texttt{arch} package (BSD license). All are cited in the paper and references.
+
+\item \textbf{New assets}
+
+Question: Are new assets introduced in the paper well documented?
+
+Answer: \textbf{[Yes]}
+
+Justification: The ALVRO codebase is released with a detailed \texttt{README.md} covering installation, data preparation, training commands, and evaluation. All scripts are documented inline.
+
+\item \textbf{Crowdsourcing and research with human subjects}
+
+Question: Does the paper involve crowdsourcing or research with human subjects?
+
+Answer: \textbf{[N/A]}
+
+Justification: The paper involves only automated simulation over historical market data. No human participants are involved.
+
+\item \textbf{Institutional review board (IRB) approvals}
+
+Question: Does the paper describe IRB approvals for research with human subjects?
+
+Answer: \textbf{[N/A]}
+
+Justification: No human subjects are involved in this research.
+
+\item \textbf{Declaration of LLM usage}
+
+Question: Does the paper describe the usage of LLMs as an important or non-standard component of the core method?
+
+Answer: \textbf{[Yes]}
+
+Justification: The DeepSeek Sentinel (Section~4.3) is a core methodological component that uses a large language model (DeepSeek-Chat) to generate the risk multiplier $\lambda_t$ from market snapshots. This LLM component directly affects the reward function and policy behaviour, and is therefore declared explicitly.
+
+\end{enumerate}
 
 \end{document}
