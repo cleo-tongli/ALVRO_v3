@@ -1,0 +1,32 @@
+# ─── ALVRO_v3 — Python Dependencies ───────────────────────────────
+# Install: pip install -r requirements.txt
+# Python  : 3.10 or 3.11 recommended
+# ──────────────────────────────────────────────────────────────────
+
+# ── Core RL stack ─────────────────────────────────────────────────
+gymnasium>=0.29.1
+stable-baselines3>=2.3.0
+sb3-contrib>=2.3.0          # MaskablePPO (action masking)
+torch>=2.2.0                # PyTorch backend for SB3
+
+# ── Data & Numerics ───────────────────────────────────────────────
+numpy>=1.26.0
+pandas>=2.2.0
+pyarrow>=15.0.0             # Parquet read/write
+
+# ── GARCH Volatility ──────────────────────────────────────────────
+arch>=6.3.0                 # GARCH(1,1) via arch_model
+
+# ── Visualisation ─────────────────────────────────────────────────
+matplotlib>=3.8.0
+plotly>=5.20.0
+kaleido>=0.2.1              # plotly static image export
+
+# ── LLM / API (DeepSeek / OpenAI Sentinel) ────────────────────────
+openai>=1.30.0              # openai-compatible client for DeepSeek
+
+# ── Config & Utilities ────────────────────────────────────────────
+pyyaml>=6.0.1
+
+# ── Optional: TensorBoard logging ─────────────────────────────────
+tensorboard>=2.16.0

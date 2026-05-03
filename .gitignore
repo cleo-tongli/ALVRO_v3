@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments (not the env/ package — that's project code)
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data (raw / processed) — large files
+data/processed_market.parquet
+data/alessiobrini_repo/
+data/*.csv
+data/*.parquet
+
+# Trained models — large binary files
+logs/run_01/alvro_ppo_final.zip
+logs/run_llm/
+logs/run_*/checkpoints/
+logs/run_*/tb/
+*.zip
+
+# Keep best models in git? Uncomment to exclude:
+# logs/run_*/best_model/
+
+# Evaluation outputs
+logs/results/
+logs/plots/
+logs/*.log
+
+# Secrets
+.env
+*.env.*
+secrets.yaml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# LaTeX build artefacts
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+paper/*.toc
+paper/_minted*/

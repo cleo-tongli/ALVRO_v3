@@ -1,0 +1,88 @@
+# ─────────────────────────────────────────────────────────────────
+# ALVRO_v3 — Adaptive LVR Optimizer  (FinAI Contest 2025)
+# Full project configuration file
+# ─────────────────────────────────────────────────────────────────
+
+# ── Environment ──────────────────────────────────────────────────
+environment:
+  gas_fee: 5.0                # USD per rebalancing transaction
+  initial_capital: 100_000    # Starting portfolio value (USD)
+  fee_tier: 0.0005            # Uniswap v3 0.05 % pool
+  max_steps: null             # null → use full dataset length
+  render_mode: null           # "human" for console output
+
+# ── Agent (MaskablePPO) ──────────────────────────────────────────
+agent:
+  learning_rate: 3.0e-4
+  n_steps: 2048               # Rollout buffer size
+  batch_size: 64
+  n_epochs: 10
+  gamma: 0.99
+  clip_range: 0.2
+  ent_coef: 0.01              # Entropy coefficient (exploration)
+  seed: 42
+  device: "auto"              # "cpu" | "cuda" | "auto"
+  total_timesteps: 1_000_000
+
+  # Policy network architecture
+  policy_net_arch:
+    - pi: [256, 256]
+      vf: [256, 256]
+
+# ── Training logistics ───────────────────────────────────────────
+training:
+  train_split: 0.80           # Fraction of data used for training
+  eval_freq: 20_000           # Steps between eval runs
+  save_freq: 100_000          # Steps between checkpoints
+  log_dir: "logs/run_01"
+
+# ── DeepSeek Sentinel (λ risk signal) ────────────────────────────
+sentinel:
+  mode: "rule"                # "static" | "rule" | "llm"
+  static_lambda: 1.0          # Used when mode=static
+  llm_model: "deepseek-chat"
+  api_key_env: "DEEPSEEK_API_KEY"
+  api_base_url: "https://api.deepseek.com/v1"
+  update_every: 24            # LLM call frequency (every N steps)
+  lambda_min: 0.3
+  lambda_max: 2.0
+
+# ── Data pipeline ────────────────────────────────────────────────
+data:
+  asset: "WETH/USDC"
+  chain: "ethereum"
+  fee_tier: "0.05%"
+  resolution: "1h"
+  start_date: "2021-01-01"
+  end_date:   "2024-12-31"
+  output_parquet: "data/processed_market.parquet"
+
+  # GARCH model parameters
+  garch_p: 1
+  garch_q: 1
+
+  # Feature engineering
+  rsi_period: 14
+  ma_window: 24               # 24-h simple moving average
+  range_pct: 0.05             # Gamma estimation half-width
+
+  # Synthetic fallback (when real data unavailable)
+  synthetic:
+    n_hours: 26_280            # 3 years of hourly data
+    start_price: 2500.0
+    mu: 0.0001                 # Hourly drift
+    sigma_base: 0.018          # Base hourly volatility
+    seed: 42
+
+# ── Evaluation ───────────────────────────────────────────────────
+evaluation:
+  eval_split: 0.20            # Last 20 % of data used for eval
+  n_eval_episodes: 5
+  seed: 100
+  output_csv: "logs/results/eval_trajectory.csv"
+
+# ── Plot / Visualisation ─────────────────────────────────────────
+plot:
+  output_dir: "logs/plots"
+  dpi: 150
+  dark_theme: true
