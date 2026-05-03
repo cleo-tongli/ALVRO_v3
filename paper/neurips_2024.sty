@@ -1,0 +1,74 @@
+% neurips_2024.sty — NeurIPS 2024 style file (reconstruction)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{neurips_2024}[2024/01/01 NeurIPS 2024 Style]
+
+\newif\if@preprint \@preprintfalse
+\newif\if@final   \@finalfalse
+\newif\if@nonatbib\@nonatbibfalse
+
+\DeclareOption{preprint}{\@preprinttrue}
+\DeclareOption{final}{\@finaltrue}
+\DeclareOption{nonatbib}{\@nonatbibtrue}
+\ProcessOptions\relax
+
+\RequirePackage[
+  paperwidth=8.5in, paperheight=11in,
+  left=1.5in, right=1.5in,
+  top=1in, bottom=1in,
+  columnsep=0.25in
+]{geometry}
+
+\RequirePackage{times}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{microtype}
+\RequirePackage{amsmath,amssymb,amsfonts}
+
+\RequirePackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\section}{0pt}{12pt plus 2pt minus 2pt}{6pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{8pt plus 2pt minus 2pt}{4pt plus 1pt}
+
+\RequirePackage{authblk}
+\renewcommand\Affilfont{\small}
+\renewcommand\Authfont{\normalsize\bfseries}
+\setlength{\affilsep}{0.5em}
+
+\renewcommand{\maketitle}{%
+  \begin{center}%
+    {\LARGE\bfseries \@title \par}%
+    \vskip 1em%
+    {\large \@author \par}%
+    \vskip 0.5em%
+    \if@preprint{\small Preprint --- under review}\par\fi%
+    \if@final{\small NeurIPS 2024}\par\fi%
+  \end{center}%
+  \vskip 1em%
+}
+
+\renewenvironment{abstract}{%
+  \vskip 0.5em%
+  \centerline{\bfseries Abstract}%
+  \vskip 0.5em%
+  \begin{quote}\small%
+}{%
+  \end{quote}%
+  \vskip 1em%
+}
+
+\RequirePackage[font=small,labelfont=bf]{caption}
+
+\setlength{\footnotesep}{6.65pt}
+\setlength{\skip\footins}{9pt plus 4pt minus 2pt}
+
+\RequirePackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\if@nonatbib\else
+  \RequirePackage[numbers,compress,sort]{natbib}
+\fi
+
+\newcommand{\nipsfinalcopy}{}
+\newcommand{\nipssubmit}{}
+
+\endinput
