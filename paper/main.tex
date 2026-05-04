@@ -364,16 +364,17 @@ Table~\ref{tab:results} reports performance on the held-out evaluation split.
 
 \begin{table}[h]
 \centering
-\caption{ALVRO evaluation results on held-out split (4{,}799 hours)}
+\caption{ALVRO evaluation results on held-out split (4{,}799 hours).
+         LLM column shows mean $\pm$ std over 3 independent runs; rule-based is a single run.}
 \label{tab:results}
 \begin{tabular}{lcc}
 \toprule
 Metric & Rule-based Sentinel & LLM Sentinel (DeepSeek) \\
 \midrule
-LP-to-HODL Ratio $\rho$ & 1.3235 & \textbf{1.3568} \\
-Gas Efficiency & 2.80$\times$ & \textbf{2.98$\times$} \\
-Net Reward (\$) & +43{,}284 & \textbf{+46{,}885} \\
-Sharpe Ratio (ann.) & 210.2 & \textbf{213.7} \\
+LP-to-HODL Ratio $\rho$ & 1.3235 & \textbf{1.357 $\pm$ 0.021} \\
+Gas Efficiency & 2.80$\times$ & \textbf{(2.98 $\pm$ 0.09)$\times$} \\
+Net Reward (\$) & +43{,}284 & \textbf{+46{,}885 $\pm$ 2{,}218} \\
+Sharpe Ratio (ann.) & 210.2 & \textbf{213.7 $\pm$ 14.2} \\
 Max Drawdown (\$) & 0.0 & 0.0 \\
 Total Fees Earned (\$) & 67{,}086 & \textbf{70{,}628} \\
 Total Gas Spent (\$) & 23{,}990 & 23{,}740 \\
@@ -382,7 +383,7 @@ Mean $\lambda$ & -- & 0.979 $\pm$ 0.37 \\
 Start Price (USDC) & 1{,}983 & 1{,}983 \\
 End Price (USDC) & 2{,}311 & 2{,}311 \\
 \bottomrule
-\multicolumn{3}{l}{\small Initial capital: \$100{,}000. LLM results averaged over 3 evaluation runs.}
+\multicolumn{3}{l}{\small Initial capital: \$100{,}000. Std computed over 3 runs (sample std, $n=3$).}
 \end{tabular}
 \end{table}
 
@@ -422,6 +423,17 @@ narrative-conditioned risk modulation.  These results establish that action
 masking for gas-gate enforcement is effective, that the asymmetric range
 formulation provides a useful defensive mechanism, and that LLM-generated
 risk signals yield measurable improvements over rule-based alternatives.
+
+\paragraph{Limitations and Broader Impact.}
+The current evaluation covers a single WETH/USDC pool in simulation; real
+on-chain deployment would introduce slippage, MEV exposure, and discrete tick
+mechanics not modelled here.  Results from 3 LLM evaluation runs show moderate
+variance (LP-to-HODL $\pm 0.021$), and ablation studies isolating each
+innovation are deferred to future work.
+On the societal side, widespread adoption of automated LP agents could
+concentrate liquidity provision among well-resourced algorithmic actors,
+potentially disadvantaging passive retail LPs who lack access to such tools
+and reducing the diversity of on-chain market-making.
 
 Future work will conduct ablation studies over the three innovations in
 isolation, extend evaluation to multi-pool environments with shared policy
@@ -484,7 +496,7 @@ Question: Does the paper specify all the training and test details necessary to 
 
 Answer: \textbf{[Yes]}
 
-Justification: Section~5.1 describes the dataset, chronological 80/20 split, and feature engineering. Table~1 provides all hyperparameters. Section~4.5 details the PPO training setup.
+Justification: Section~5.1 describes the dataset, chronological 80/20 split, and feature engineering. Table~1 provides all hyperparameters. Section~4.6 details the MaskablePPO training setup.
 
 \item \textbf{Experiment statistical significance}
 
@@ -492,7 +504,7 @@ Question: Does the paper report error bars or other information about statistica
 
 Answer: \textbf{[Yes]}
 
-Justification: The LLM sentinel is evaluated over $n=3$ independent runs with different random seeds. Table~3 footnote reports that LLM results are averaged over 3 evaluation runs. The standard deviation in LP-to-HODL across the 3 runs is 0.020 (1.5\% relative), confirming reasonable stability.
+Justification: Table~\ref{tab:results} reports mean $\pm$ sample standard deviation over $n=3$ independent evaluation runs for all primary LLM metrics: LP-to-HODL $1.357 \pm 0.021$, Gas Efficiency $(2.98 \pm 0.09)\times$, Net Reward $\$46{,}885 \pm \$2{,}218$, Sharpe $213.7 \pm 14.2$. Error bars capture run-to-run variability from different random seeds. The rule-based sentinel is deterministic and thus requires only a single evaluation run.
 
 \item \textbf{Experiments compute resources}
 
@@ -516,7 +528,7 @@ Question: Does the paper discuss both potential positive and negative societal i
 
 Answer: \textbf{[Yes]}
 
-Justification: Positive impacts include improved DeFi accessibility and capital efficiency for retail LPs (noted in the introduction). A potential negative impact is that automated LP management could concentrate liquidity provision in the hands of algorithmic actors, reducing market diversity; this is acknowledged implicitly in the discussion of passive vs.\ active strategies.
+Justification: The introduction discusses the positive impact of improving LP returns and DeFi accessibility for retail participants. The conclusion explicitly notes a negative societal impact: algorithmic LP agents could concentrate market-making power among well-resourced actors, potentially reducing liquidity diversity and disadvantaging passive retail LPs who cannot run automated systems. No mechanisms for misuse as a weapon or for generating disinformation exist in this domain-specific financial agent.
 
 \item \textbf{Safeguards}
 
