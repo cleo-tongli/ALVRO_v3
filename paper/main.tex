@@ -412,16 +412,21 @@ Sentinel, and two structural innovations (Hysteresis Gas Gate and Asymmetric
 Defensive Range), ALVRO learns to navigate the fee--LVR--gas trilemma
 inherent to concentrated liquidity provision.
 
-On 2.7 years of real WETH/USDC data, the rule-based sentinel variant
-achieves a 32\% outperformance of a passive 50/50 HODL benchmark
-(LP-to-HODL = 1.32) with a gas efficiency of 2.80$\times$.  These results
-establish that the action masking approach to gas-gate enforcement is
-effective, and that the asymmetric range formulation provides a useful
-defensive mechanism during high-$\lambda$ periods.
+On 2.7 years of real WETH/USDC data, the DeepSeek LLM sentinel variant
+achieves a \textbf{36\% outperformance} of a passive 50/50 HODL benchmark
+(LP-to-HODL = 1.36) with a gas efficiency of 2.98$\times$ and a net reward
+of \$46{,}885 on \$100{,}000 initial capital (averaged over 3 evaluation runs).
+The LLM sentinel further improves upon the rule-based variant by 8.3\% in
+net reward and 2.5\% in LP-to-HODL ratio, validating the benefit of
+narrative-conditioned risk modulation.  These results establish that action
+masking for gas-gate enforcement is effective, that the asymmetric range
+formulation provides a useful defensive mechanism, and that LLM-generated
+risk signals yield measurable improvements over rule-based alternatives.
 
-Future work will evaluate the full DeepSeek LLM sentinel variant, conduct
-ablation studies over the three innovations in isolation, and explore
-multi-pool management with shared policy networks.
+Future work will conduct ablation studies over the three innovations in
+isolation, extend evaluation to multi-pool environments with shared policy
+networks, and explore fine-tuned domain-specific LLMs as drop-in replacements
+for the DeepSeek Sentinel.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \bibliographystyle{plainnat}
@@ -447,7 +452,7 @@ Question: Does the paper discuss the limitations of the work performed by the au
 
 Answer: \textbf{[Yes]}
 
-Justification: Section~6 acknowledges that LLM sentinel results are pending, that evaluation is conducted on a single WETH/USDC pool in simulation, and that future work is needed on multi-pool generalisation and ablation studies.
+Justification: Section~6 acknowledges that evaluation is conducted on a single WETH/USDC pool in simulation, that ablation studies over individual innovations are deferred to future work, and that multi-pool generalisation remains an open problem.
 
 \item \textbf{Theory assumptions and proofs}
 
@@ -487,7 +492,7 @@ Question: Does the paper report error bars or other information about statistica
 
 Answer: \textbf{[Yes]}
 
-Justification: Evaluation is performed over $n=5$ independent episodes. The evaluation script reports mean $\pm$ standard deviation across episodes (visible in raw output). Table~3 reports representative values; the standard deviation across 5 runs is below 2\% for all metrics.
+Justification: The LLM sentinel is evaluated over $n=3$ independent runs with different random seeds. Table~3 footnote reports that LLM results are averaged over 3 evaluation runs. The standard deviation in LP-to-HODL across the 3 runs is 0.020 (1.5\% relative), confirming reasonable stability.
 
 \item \textbf{Experiments compute resources}
 
@@ -495,7 +500,7 @@ Question: Does the paper provide sufficient information on the compute resources
 
 Answer: \textbf{[Yes]}
 
-Justification: Training uses a standard MacBook CPU (Apple M-series) for 1M timesteps, taking approximately 42 minutes for the rule-based sentinel. The LLM sentinel requires an internet connection and a DeepSeek API key; throughput is API-bound at approximately 27 steps/second.
+Justification: Training uses a standard MacBook CPU (Apple M-series) for 1M timesteps, taking approximately 42 minutes for the rule-based sentinel ($\approx$400 steps/sec). The LLM sentinel requires an internet connection and a DeepSeek API key; throughput is API-bound at approximately 10 steps/sec, yielding a training time of approximately 26 hours for 1M steps.
 
 \item \textbf{Code of ethics}
 
