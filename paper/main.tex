@@ -355,8 +355,11 @@ Values above 1.0 indicate outperformance of passive holding.
 \textbf{Gas Efficiency}: ratio of total fees earned to total gas spent,
 measuring the quality of rebalancing decisions.
 
-\textbf{Sharpe Ratio}: annualised from hourly rewards,
-$\text{SR} = \nicefrac{\mu_R}{\sigma_R} \times \sqrt{8760}$.
+\textbf{Sharpe Ratio}: annualised from the step-level reward signal $R_t$
+(Eq.~\ref{eq:reward}), i.e., $\text{SR} = \nicefrac{\mu_R}{\sigma_R} \times \sqrt{8760}$.
+Note this is \emph{not} a mark-to-market portfolio return Sharpe; it reflects
+the ratio of mean fee-minus-LVR-minus-gas reward to its volatility, and
+therefore takes values far above those typical of return-based Sharpe ratios.
 
 \subsection{Results}
 
@@ -393,10 +396,13 @@ despite the 16.5\% ETH price appreciation from \$1{,}983 to \$2{,}311 that natur
 favours the hold strategy.  The DeepSeek LLM sentinel \emph{outperforms} the
 rule-based variant across all metrics: LP-to-HODL of 1.357 vs.\ 1.323 (+2.5\%),
 net reward of \$46{,}885 vs.\ \$43{,}284 (+8.3\%), and gas efficiency of
-2.98$\times$ vs.\ 2.80$\times$.  The LLM sentinel's mean~$\lambda = 0.979 \pm 0.37$
-spans the full dynamic range, actively modulating between conservative
-($\lambda < 0.75$) and defensive ($\lambda > 1.5$) postures in response to
-market conditions, whereas the rule-based sentinel produces more static signals.
+2.98$\times$ vs.\ 2.80$\times$.  Analysis of the 4{,}798-step evaluation trajectory shows the LLM sentinel
+operates predominantly in the calm regime: $\lambda \in [0.75, 1.0]$ for
+73.5\% of steps, shifting to a defensive posture ($\lambda > 1.25$) for
+18.0\% of steps during elevated-volatility episodes.  The overall distribution
+has mean $\lambda = 0.961$ and std $0.272$, ranging from 0.65 to 1.85,
+confirming that the LLM actively discriminates between market regimes rather
+than producing stochastic noise around a fixed value.
 
 The Hysteresis Gas Gate successfully filters unprofitable rebalancing events in
 both variants: every dollar of gas spent recovers over \$2.80 in incremental fee
