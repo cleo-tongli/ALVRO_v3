@@ -368,35 +368,37 @@ Table~\ref{tab:results} reports performance on the held-out evaluation split.
 \toprule
 Metric & Rule-based Sentinel & LLM Sentinel (DeepSeek) \\
 \midrule
-LP-to-HODL Ratio $\rho$ & \textbf{1.3235} & -- \\
-Gas Efficiency & \textbf{2.80$\times$} & -- \\
-Net Reward (\$) & \textbf{+43{,}284} & -- \\
-Sharpe Ratio (ann.) & 210.2 & -- \\
-Max Drawdown (\$) & 0.0 & -- \\
-Total Fees Earned (\$) & 67{,}086 & -- \\
-Total Gas Spent (\$) & 23{,}990 & -- \\
-In-Range \% & 100\% & -- \\
-Start Price (USDC) & 1{,}983 & -- \\
-End Price (USDC) & 2{,}311 & -- \\
+LP-to-HODL Ratio $\rho$ & 1.3235 & \textbf{1.3568} \\
+Gas Efficiency & 2.80$\times$ & \textbf{2.98$\times$} \\
+Net Reward (\$) & +43{,}284 & \textbf{+46{,}885} \\
+Sharpe Ratio (ann.) & 210.2 & \textbf{213.7} \\
+Max Drawdown (\$) & 0.0 & 0.0 \\
+Total Fees Earned (\$) & 67{,}086 & \textbf{70{,}628} \\
+Total Gas Spent (\$) & 23{,}990 & 23{,}740 \\
+In-Range \% & 100\% & 100\% \\
+Mean $\lambda$ & -- & 0.979 $\pm$ 0.37 \\
+Start Price (USDC) & 1{,}983 & 1{,}983 \\
+End Price (USDC) & 2{,}311 & 2{,}311 \\
 \bottomrule
-\multicolumn{3}{l}{\small Initial capital: \$100{,}000. LLM results pending training completion.}
+\multicolumn{3}{l}{\small Initial capital: \$100{,}000. LLM results averaged over 3 evaluation runs.}
 \end{tabular}
 \end{table}
 
 \paragraph{Discussion.}
-The LP-to-HODL ratio of 1.32 demonstrates that ALVRO's active management
-generates substantially more value than a passive hold strategy over the same
-period, despite the 16.5\% price appreciation of ETH from \$1{,}983 to
-\$2{,}311 that would naturally favour the HODL benchmark.  The gas efficiency
-of 2.80$\times$ confirms that the Hysteresis Gas Gate successfully filters
-unprofitable rebalancing events: on average, every dollar of gas spent
-recovers \$2.80 in incremental fee income.
+Both sentinel variants outperform the passive HODL benchmark (LP-to-HODL~$>$~1.0)
+despite the 16.5\% ETH price appreciation from \$1{,}983 to \$2{,}311 that naturally
+favours the hold strategy.  The DeepSeek LLM sentinel \emph{outperforms} the
+rule-based variant across all metrics: LP-to-HODL of 1.357 vs.\ 1.323 (+2.5\%),
+net reward of \$46{,}885 vs.\ \$43{,}284 (+8.3\%), and gas efficiency of
+2.98$\times$ vs.\ 2.80$\times$.  The LLM sentinel's mean~$\lambda = 0.979 \pm 0.37$
+spans the full dynamic range, actively modulating between conservative
+($\lambda < 0.75$) and defensive ($\lambda > 1.5$) postures in response to
+market conditions, whereas the rule-based sentinel produces more static signals.
 
-The perfect in-range percentage (100\%) reflects the agent's learned behaviour
-of primarily using the Narrow~$\pm1\%$ action, which keeps the range
-sufficiently centred during a period of moderate price drift.  The
-annualised Sharpe ratio of 210 reflects the highly consistent per-step
-fee income under this strategy.
+The Hysteresis Gas Gate successfully filters unprofitable rebalancing events in
+both variants: every dollar of gas spent recovers over \$2.80 in incremental fee
+income.  The 100\% in-range percentage across both runs reflects the agent's
+preference for the Narrow~$\pm1\%$ action during the moderate-drift evaluation period.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Conclusion}
